@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>陈少涵 — 教育技术 · AIGC 创作 · 课程设计</title>
+  <meta name="description" content="陈少涵的个人作品集 — 教育技术学 2027 届，专注 AIGC 课程创作、教学课件设计与互动教学工具开发。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --mint: #b8d8c8;
+      --mint-bg: #e8f5ee;
+      --mint-light: #d4edda;
+      --brown: #6b4226;
+      --brown-dark: #5a3520;
+      --brown-light: #8b6344;
+      --brown-pale: #c9a882;
+      --brown-checker: #a08060;
+      --cream: #fdfbf7;
+      --pink: #f2b5c5;
+      --pink-light: #fce4ec;
+      --pink-badge: #f8c8d4;
+      --yellow-soft: #f9e4a7;
+      --lavender: #c5b3e6;
+      --text: #4a3728;
+      --text-light: #7a6455;
+      --white: #ffffff;
+      --sans: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      --heading: 'Noto Serif SC', 'Noto Sans SC', serif;
+      --mono: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text);
+      background: var(--mint-bg);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Star/sparkle background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+        radial-gradient(2px 2px at 40px 70px, #fff, transparent),
+        radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+        radial-gradient(1px 1px at 130px 80px, #fff, transparent),
+        radial-gradient(2px 2px at 160px 30px, #fff, transparent),
+        radial-gradient(1px 1px at 200px 60px, #fff, transparent),
+        radial-gradient(2px 2px at 250px 20px, #fff, transparent),
+        radial-gradient(1px 1px at 300px 90px, #fff, transparent),
+        radial-gradient(2px 2px at 350px 50px, #fff, transparent),
+        radial-gradient(1px 1px at 400px 30px, #fff, transparent),
+        radial-gradient(2px 2px at 450px 70px, #fff, transparent),
+        radial-gradient(1px 1px at 500px 40px, #fff, transparent),
+        radial-gradient(2px 2px at 50px 120px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 100px 150px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(2px 2px at 180px 130px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 280px 160px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(2px 2px at 380px 140px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 480px 120px, rgba(255,255,255,0.6), transparent);
+      background-size: 520px 180px;
+      background-repeat: repeat;
+      opacity: 0.7;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    :focus-visible { outline: 2px dashed var(--brown); outline-offset: 3px; }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+
+    /* CHECKERED DIVIDER */
+    .checker-divider {
+      height: 16px;
+      background:
+        repeating-conic-gradient(var(--brown-checker) 0% 25%, var(--cream) 0% 50%) 0 0 / 16px 16px;
+      opacity: 0.5;
+    }
+
+    /* FLOATING DECORATIONS */
+    .deco {
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+      font-size: 1.5rem;
+      opacity: 0.5;
+    }
+
+    /* HEADER */
+    .site-header {
+      padding: 0.8rem 0;
+      position: sticky; top: 0;
+      background: rgba(232, 245, 238, 0.95);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .header-brand {
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .header-logo {
+      font-size: 1.2rem;
+    }
+    .header-name {
+      font-family: var(--heading);
+      font-size: 1.1rem; color: var(--brown);
+    }
+    .header-nav { display: flex; gap: 0.3rem; }
+    .header-nav a {
+      font-size: 0.82rem; color: var(--text-light); font-weight: 500;
+      padding: 0.3rem 0.9rem; border-radius: 20px;
+      transition: all 0.25s;
+    }
+    .header-nav a:hover,
+    .header-nav a.active {
+      background: var(--brown);
+      color: var(--white);
+    }
+
+    /* HERO */
+    .hero {
+      padding: 3rem 0 2rem;
+      position: relative;
+    }
+    .hero-inner {
+      display: flex;
+      gap: 3rem;
+      align-items: flex-start;
+    }
+    .hero-content { flex: 1; max-width: 600px; }
+
+    .greeting-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.35rem 1rem;
+      background: var(--pink-badge);
+      color: var(--brown);
+      border-radius: 20px;
+      font-size: 0.85rem; font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .hero-name {
+      font-family: var(--heading);
+      font-size: 3rem;
+      color: var(--brown-dark);
+      margin-bottom: 0.3rem;
+      line-height: 1.3;
+    }
+    .hero-name .highlight {
+      background: var(--pink-light);
+      padding: 0 0.3em;
+      border-radius: 6px;
+    }
+
+    .hero-roles {
+      font-size: 0.95rem;
+      color: var(--brown-light);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .hero-bio {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.9;
+      margin-bottom: 1.5rem;
+      max-width: 500px;
+    }
+
+    .hero-buttons {
+      display: flex; gap: 0.8rem; margin-bottom: 2rem; flex-wrap: wrap;
+    }
+    .btn-contact {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.6rem 1.4rem;
+      background: var(--brown);
+      color: var(--white);
+      font-weight: 600; font-size: 0.9rem;
+      border: none; border-radius: 25px;
+      transition: all 0.2s;
+    }
+    .btn-contact:hover { background: var(--brown-dark); transform: translateY(-1px); }
+    .btn-works {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.6rem 1.4rem;
+      background: var(--white);
+      color: var(--brown);
+      font-weight: 600; font-size: 0.9rem;
+      border: 2px solid var(--brown-pale);
+      border-radius: 25px;
+      transition: all 0.2s;
+    }
+    .btn-works:hover { border-color: var(--pink); background: var(--pink-light); transform: translateY(-1px); }
+
+    .hero-stats {
+      display: flex; gap: 2rem;
+    }
+    .stat-item {}
+    .stat-number {
+      font-family: var(--heading);
+      font-size: 1.8rem;
+      color: var(--brown);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-top: 0.2rem;
+    }
+
+    /* Hero Skills Card */
+    .hero-skills {
+      flex-shrink: 0;
+      width: 280px;
+    }
+    .skills-summary-card {
+      background: var(--white);
+      border: 2px dashed var(--brown-pale);
+      border-radius: 20px;
+      padding: 1.5rem;
+      position: relative;
+    }
+    .skills-summary-card::before {
+      content: '';
+      position: absolute;
+      top: -8px; left: 50%;
+      transform: translateX(-50%);
+      width: 60px; height: 18px;
+      background: var(--mint-light);
+      border: 1px dashed var(--mint);
+      border-radius: 3px;
+      opacity: 0.7;
+    }
+    .skills-summary-title {
+      font-family: var(--heading);
+      font-size: 1.1rem;
+      color: var(--brown);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .skills-summary-group {
+      margin-bottom: 0.8rem;
+    }
+    .skills-summary-group:last-child {
+      margin-bottom: 0;
+    }
+    .skills-summary-label {
+      font-size: 0.75rem;
+      color: var(--brown-light);
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .skills-summary-label::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--mint);
+    }
+    .skills-summary-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+    .skill-tag-sm {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      background: var(--cream);
+      color: var(--brown);
+      border: 1px dashed var(--brown-pale);
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* SECTIONS */
+    .section {
+      padding: 3rem 0;
+      position: relative;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .section-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .section-label-tag {
+      font-size: 0.7rem;
+      color: var(--brown);
+      font-weight: 600;
+      padding: 0.2rem 0.7rem;
+      background: var(--pink-light);
+      border-radius: 12px;
+      letter-spacing: 0.05em;
+    }
+    .section-title {
+      font-family: var(--heading);
+      font-size: 2rem;
+      color: var(--brown);
+    }
+    .section-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+    }
+    .section-dots span {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--pink);
+    }
+    .section-dots span:nth-child(2) { background: var(--mint); }
+    .section-dots span:nth-child(3) { background: var(--yellow-soft); }
+    .section-dots span:nth-child(4) { background: var(--lavender); }
+    .section-dots span:nth-child(5) { background: var(--brown-pale); }
+
+    .section-desc {
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      max-width: 500px;
+      margin: 0 auto 2rem;
+    }
+
+    /* ABOUT ME */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+    .about-photo-placeholder {
+      aspect-ratio: 4/5;
+      background: repeating-linear-gradient(
+        45deg,
+        var(--cream) 0px, var(--cream) 10px,
+        var(--mint-light) 10px, var(--mint-light) 20px
+      );
+      border: 2px dashed var(--brown-pale);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      color: var(--text-light);
+      font-size: 0.85rem;
+    }
+    .about-photo-placeholder .placeholder-icon { font-size: 2rem; }
+
+    .about-text h3 {
+      font-family: var(--heading);
+      font-size: 1.3rem;
+      color: var(--brown);
+      margin-bottom: 0.8rem;
+    }
+    .about-text p {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.9;
+      margin-bottom: 0.8rem;
+    }
+
+    .capability-blocks {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin: 1rem 0 1.2rem;
+    }
+    .capability-item {
+      background: var(--white);
+      border: 1.5px solid var(--mint);
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
+      position: relative;
+    }
+    .capability-item::before {
+      content: '';
+      position: absolute;
+      top: -1.5px; left: 1rem;
+      width: 40px; height: 3px;
+      background: var(--brown-pale);
+      border-radius: 2px;
+    }
+    .capability-title {
+      font-family: var(--heading);
+      font-size: 0.95rem;
+      color: var(--brown);
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .capability-title .cap-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.4rem; height: 1.4rem;
+      background: var(--mint-bg);
+      border-radius: 50%;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--brown);
+      flex-shrink: 0;
+    }
+    .capability-desc {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    .info-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1rem 0 1.2rem;
+    }
+    .info-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.75rem;
+      background: var(--white);
+      border: 1.5px dashed var(--brown-pale);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--brown);
+      line-height: 1.4;
+    }
+    .info-pill .pill-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .info-pill .pill-label {
+      color: var(--text-light);
+      font-size: 0.72rem;
+    }
+    .info-pill .pill-val {
+      font-weight: 600;
+    }
+    .info-pill:nth-child(1) .pill-dot { background: var(--mint); }
+    .info-pill:nth-child(2) .pill-dot { background: var(--pink); }
+    .info-pill:nth-child(3) .pill-dot { background: var(--brown-pale); }
+    .info-pill:nth-child(4) .pill-dot { background: var(--lavender, #b39ddb); }
+    .info-pill:nth-child(5) .pill-dot { background: var(--yellow-soft); }
+    .info-pill:nth-child(6) .pill-dot { background: #f4a7b9; }
+
+    /* TIMELINE */
+    .timeline-card {
+      background: var(--white);
+      border: 2px dashed var(--brown-pale);
+      border-radius: 20px;
+      padding: 2rem;
+      position: relative;
+    }
+    .timeline { list-style: none; position: relative; padding-left: 1.5rem; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 5px; top: 10px; bottom: 10px;
+      border-left: 2.5px dashed var(--mint);
+    }
+    .timeline-item {
+      position: relative;
+      padding-bottom: 2rem;
+      padding-left: 0.5rem;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.5rem; top: 8px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--yellow-soft);
+      border: 2.5px solid var(--brown-pale);
+    }
+    .timeline-period {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--brown-pale);
+      font-weight: 700;
+      margin-bottom: 0.15rem;
+    }
+    .timeline-role {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--brown);
+      line-height: 1.4;
+    }
+    .timeline-org {
+      font-size: 0.85rem;
+      color: var(--brown-light);
+      font-weight: 500;
+      margin-top: 0.1rem;
+    }
+    .timeline-desc {
+      font-size: 0.88rem;
+      color: var(--text-light);
+      margin-top: 0.4rem;
+      line-height: 1.85;
+    }
+
+    /* SKILLS */
+    .skills-card {
+      background: var(--white);
+      border: 2px dashed var(--brown-pale);
+      border-radius: 20px;
+      padding: 2rem;
+    }
+    .skills-group { margin-bottom: 1.2rem; }
+    .skills-group:last-child { margin-bottom: 0; }
+    .skills-label {
+      font-size: 0.85rem;
+      color: var(--brown);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .skills-label::before {
+      content: '';
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--mint);
+    }
+    .skills-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tag {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: var(--cream);
+      color: var(--brown);
+      border: 1.5px dashed var(--brown-pale);
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .skill-tag:hover {
+      background: var(--mint-light);
+      border-color: var(--mint);
+      transform: translateY(-1px);
+    }
+
+    /* PROJECTS */
+    .projects-section { padding: 3rem 0; }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .project-card {
+      background: var(--white);
+      border: 2.5px dashed var(--brown-pale);
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+      position: relative;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px; height: 18px;
+      border-radius: 3px;
+      opacity: 0.7;
+      z-index: 2;
+    }
+    .project-card:nth-child(1)::before { background: var(--mint-light); border: 1px dashed var(--mint); }
+    .project-card:nth-child(2)::before { background: var(--pink-light); border: 1px dashed var(--pink); }
+    .project-card:nth-child(3)::before { background: var(--lavender-light, #ede7f6); border: 1px dashed var(--lavender); }
+    .project-card:nth-child(4)::before { background: var(--yellow-soft); border: 1px dashed var(--brown-pale); }
+    .project-card:nth-child(5)::before { background: var(--mint-light); border: 1px dashed var(--mint); }
+    .project-card:nth-child(6)::before { background: var(--pink-light); border: 1px dashed var(--pink); }
+
+    .project-card:hover {
+      transform: translateY(-4px) rotate(-0.5deg);
+      box-shadow: 0 8px 28px rgba(107, 66, 38, 0.12);
+      border-color: var(--brown-light);
+    }
+    .project-card:focus-visible { outline: 2px dashed var(--brown); outline-offset: 3px; }
+    .card-preview {
+      height: 150px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      background: var(--cream);
+      border-bottom: 2px dashed var(--brown-pale);
+    }
+    .card-preview img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top center;
+    }
+    .card-body { padding: 1rem 1.1rem 1.15rem; }
+    .card-category {
+      font-size: 0.68rem;
+      color: var(--brown-light);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.25rem;
+      padding: 0.15rem 0.5rem;
+      background: var(--mint-light);
+      border-radius: 10px;
+      display: inline-block;
+    }
+    .card-title {
+      font-family: var(--heading);
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.4;
+      margin-bottom: 0.3rem;
+      color: var(--brown);
+    }
+    .card-meta { font-size: 0.75rem; color: var(--text-light); }
+    .card-hint {
+      font-size: 0.72rem;
+      color: var(--brown-light);
+      font-weight: 500;
+      margin-top: 0.5rem;
+      padding: 0.2rem 0.5rem;
+      background: var(--yellow-soft);
+      border-radius: 10px;
+      display: inline-block;
+    }
+
+    /* CONTACT */
+    .contact-card {
+      background: var(--white);
+      border: 2px dashed var(--brown-pale);
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .contact-card::before {
+      content: '🎀';
+      position: absolute;
+      top: -12px; left: 20px;
+      font-size: 1.5rem;
+    }
+    .contact-title {
+      font-family: var(--heading);
+      font-size: 1.6rem;
+      color: var(--brown);
+      margin-bottom: 0.5rem;
+    }
+    .contact-desc {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+    }
+    .contact-items {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.8rem;
+    }
+    .contact-item {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 1rem;
+      background: var(--cream);
+      border: 1.5px dashed var(--brown-pale);
+      border-radius: 25px;
+      font-size: 0.88rem;
+      color: var(--brown);
+      transition: all 0.2s;
+    }
+    .contact-item:hover {
+      background: var(--mint-light);
+      border-color: var(--mint);
+    }
+
+    /* FOOTER */
+    .site-footer {
+      padding: 1.5rem 0;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-light);
+      position: relative;
+    }
+    .site-footer p {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(74, 55, 40, 0.4);
+      z-index: 200;
+      align-items: center; justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--cream);
+      border: 2.5px dashed var(--brown-pale);
+      border-radius: 24px;
+      max-width: 680px; width: 100%;
+      max-height: 85vh; overflow-y: auto;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 0.75rem; right: 0.75rem;
+      width: 2.2rem; height: 2.2rem; border: none;
+      background: var(--white);
+      border-radius: 50%;
+      cursor: pointer; font-size: 1.2rem; color: var(--brown);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1;
+      transition: all 0.2s;
+      border: 1.5px dashed var(--brown-pale);
+    }
+    .modal-close:hover { background: var(--pink-light); border-color: var(--pink); }
+    .modal-body { padding: 1.75rem 1.75rem 1.5rem; }
+    .modal-category {
+      font-size: 0.7rem; color: var(--brown-light); font-weight: 700;
+      letter-spacing: 0.04em; margin-bottom: 0.2rem;
+      padding: 0.2rem 0.6rem;
+      background: var(--mint-light);
+      border-radius: 10px;
+      display: inline-block;
+    }
+    .modal-title {
+      font-family: var(--heading);
+      font-size: 1.5rem;
+      color: var(--brown);
+      margin-bottom: 0.2rem;
+    }
+    .modal-year { font-family: var(--mono); font-size: 0.75rem; color: var(--text-light); margin-bottom: 1.25rem; }
+    .modal-section { margin-bottom: 1rem; }
+    .modal-section h3 {
+      font-size: 0.9rem; font-weight: 700; color: var(--brown);
+      margin-bottom: 0.3rem;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .modal-section h3::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--mint);
+    }
+    .modal-section p { font-size: 0.88rem; color: var(--text-light); line-height: 1.85; }
+    .modal-preview { overflow-y: auto; max-height: 65vh; padding: 0 1.5rem 1.5rem; }
+    .media-item { margin-bottom: 1rem; }
+    .media-item img {
+      width: 100%; display: block;
+      border-radius: 12px;
+      border: 2px dashed var(--brown-pale);
+    }
+    .media-caption {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      text-align: center;
+      margin-top: 0.3rem;
+    }
+    .disclaimer {
+      margin-top: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--yellow-soft);
+      border: 1.5px dashed var(--brown-pale);
+      border-radius: 12px;
+      font-size: 0.75rem;
+      color: var(--brown);
+      line-height: 1.5;
+    }
+
+    /* SCROLL ANIMATION */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .container { padding: 0 1.2rem; }
+      .hero-inner { flex-direction: column; gap: 2rem; }
+      .hero-skills { width: 100%; max-width: 400px; margin: 0 auto; }
+      .hero-name { font-size: 2.2rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .card-preview { height: 180px; }
+      .info-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 1.5rem; }
+      .site-header { padding: 0.6rem 0; }
+      .header-inner { flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+      .header-brand { width: 100%; justify-content: center; }
+      .header-nav {
+        width: 100%; justify-content: center; gap: 0.35rem;
+        padding: 0.35rem 0.5rem; margin-top: 0.2rem;
+        background: rgba(255,255,255,0.82);
+        border-radius: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+      }
+      .header-nav a { padding: 0.4rem 0.9rem; font-size: 0.8rem; }
+    }
+    @media (max-width: 480px) {
+      .hero-name { font-size: 1.8rem; }
+      .hero-buttons { flex-direction: column; }
+      .hero-stats { flex-wrap: wrap; gap: 1rem; }
+      .section-title { font-size: 1.6rem; }
+      .contact-items { flex-direction: column; align-items: center; }
+      .header-nav a { padding: 0.35rem 0.65rem; font-size: 0.72rem; }
+      .header-nav { gap: 0.25rem; padding: 0.25rem; }
+    }
+
+    /* HONORS */
+    .honors-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+    .honor-item {
+      background: var(--white);
+      border: 2px dashed var(--brown-pale);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.25s, border-color 0.25s;
+      display: block;
+    }
+    .honor-item:hover {
+      transform: translateY(-3px);
+      border-color: var(--brown-light);
+    }
+    .honor-img-wrap {
+      aspect-ratio: 4/3;
+      background: var(--cream);
+      overflow: hidden;
+      border-bottom: 2px dashed var(--brown-pale);
+    }
+    .honor-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      transition: transform 0.3s;
+    }
+    .honor-item:hover .honor-img-wrap img {
+      transform: scale(1.03);
+    }
+    .honor-body { padding: 0.9rem; }
+    .honor-title {
+      font-family: var(--heading);
+      font-size: 0.9rem;
+      color: var(--brown);
+      line-height: 1.4;
+      margin-bottom: 0.25rem;
+    }
+    .honor-meta {
+      font-size: 0.72rem;
+      color: var(--text-light);
+    }
+    /* 奖项表 */
+    .awards-table-wrap {
+      overflow-x: auto;
+      margin-top: 1.5rem;
+      border-radius: 16px;
+      border: 2px dashed var(--brown-pale);
+      background: var(--white);
+    }
+    .awards-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 680px;
+      font-size: 0.85rem;
+    }
+    .awards-table thead th {
+      background: var(--cream);
+      color: var(--brown);
+      font-family: var(--heading);
+      font-weight: 700;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 2px solid var(--brown-pale);
+      white-space: nowrap;
+    }
+    .awards-table tbody td {
+      padding: 0.78rem 1rem;
+      border-bottom: 1px solid var(--brown-pale);
+      color: var(--text);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    .awards-table tbody tr:last-child td { border-bottom: none; }
+    .awards-table tbody tr:hover { background: var(--cream); }
+    .award-priority {
+      font-family: var(--heading);
+      font-weight: 700;
+      color: var(--brown);
+      white-space: nowrap;
+      font-size: 0.95rem;
+    }
+    .award-level {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .level-city { background: #fde8e8; color: #c0392b; }
+    .level-district { background: #fff3e0; color: #d68910; }
+    .level-town { background: #f0e8ff; color: #7d3c98; }
+    .level-school { background: #e8f3e8; color: #27ae60; }
+    .award-highlight { background: #fffaf0; box-shadow: inset 3px 0 0 var(--brown); }
+    .awards-table tbody tr.award-highlight:hover { background: #fff3e0; }
+    .honor-item.award-highlight .honor-img-wrap { box-shadow: 0 0 0 2px var(--brown); border-radius: 14px; }
+    .award-tag {
+      display: inline-block; margin-left: 0.4rem; padding: 0.05rem 0.45rem;
+      background: var(--brown); color: #fff; border-radius: 999px;
+      font-size: 0.62rem; font-weight: 700; vertical-align: middle; letter-spacing: 0.02em;
+    }
+    @media (max-width: 768px) {
+      .honors-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .honors-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <div class="header-brand">
+          <span class="header-logo"></span>
+          <span class="header-name">陈少涵</span>
+        </div>
+        <nav class="header-nav" aria-label="主导航">
+          <a href="#hero" class="active">首页</a>
+          <a href="#about">关于我</a>
+          <a href="#experience">经历</a>
+          <a href="#honors">荣誉</a>
+          <a href="#works">作品</a>
+          <a href="#contact">联系</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-content fade-up">
+          <h1 class="hero-name"><span class="highlight">陈少涵</span></h1>
+          <p class="hero-roles">教育技术学 2027 届 · AIGC 课程创作 · 教学设计</p>
+          <p class="hero-bio">
+            岭南师范学院教育技术学在读，现任广州英荔教育教研实习老师（AI 课程方向）。有佛山市顺德区承德小学信息技术实习教学、Scratch 编程授课、AIGC 课程研发教学相关经历。熟练使用即梦、豆包、DeepSeek、元宝等 AI 工具完成文生图、数字人视频、课件美化，具备"技术 × 教学 × 用户"的交叉能力。
+          </p>
+          <div class="hero-buttons">
+            <a href="#contact" class="btn-contact">📬 联系我</a>
+            <a href="#works" class="btn-works">💌 看看作品</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-number">3</div>
+              <div class="stat-label">段教学经历</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">7</div>
+              <div class="stat-label">精选作品</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">4</div>
+              <div class="stat-label">指导学生获奖</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-skills fade-up">
+          <div class="skills-summary-card">
+            <div class="skills-summary-title">核心技能</div>
+            <div class="skills-summary-group">
+              <div class="skills-summary-label">AI 创作</div>
+              <div class="skills-summary-tags">
+                <span class="skill-tag-sm">即梦</span>
+                <span class="skill-tag-sm">可灵</span>
+                <span class="skill-tag-sm">豆包</span>
+                <span class="skill-tag-sm">DeepSeek</span>
+                <span class="skill-tag-sm">元宝</span>
+              </div>
+            </div>
+            <div class="skills-summary-group">
+              <div class="skills-summary-label">编程</div>
+              <div class="skills-summary-tags">
+                <span class="skill-tag-sm">Python</span>
+                <span class="skill-tag-sm">C 语言</span>
+                <span class="skill-tag-sm">Scratch</span>
+              </div>
+            </div>
+            <div class="skills-summary-group">
+              <div class="skills-summary-label">教学工具</div>
+              <div class="skills-summary-tags">
+                <span class="skill-tag-sm">乐高 WeDo</span>
+                <span class="skill-tag-sm">SPIKE</span>
+                <span class="skill-tag-sm">CSAI</span>
+              </div>
+            </div>
+            <div class="skills-summary-group">
+              <div class="skills-summary-label">文档</div>
+              <div class="skills-summary-tags">
+                <span class="skill-tag-sm">PPT 设计</span>
+                <span class="skill-tag-sm">教案撰写</span>
+                <span class="skill-tag-sm">需求调研</span>
+              </div>
+            </div>
+            <div class="skills-summary-group">
+              <div class="skills-summary-label">证书</div>
+              <div class="skills-summary-tags">
+                <span class="skill-tag-sm">教资合格证明（高中信息科技，待认定）</span>
+                <span class="skill-tag-sm">CET-6</span>
+                <span class="skill-tag-sm">普通话二甲</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Floating decorations -->
+    <span class="deco" style="top:15%;right:8%;"></span>
+    <span class="deco" style="top:25%;right:15%;font-size:1.2rem;">⭐</span>
+    <span class="deco" style="top:60%;right:5%;font-size:1.3rem;">♪</span>
+  </section>
+
+  <div class="checker-divider"></div>
+
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-label-row">
+          <span class="section-label-tag">🎀 ABOUT ME</span>
+        </div>
+        <h2 class="section-title">关于我</h2>
+        <div class="section-dots">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="about-grid" style="grid-template-columns:1fr;">
+        <div class="about-text fade-up">
+          <h3>你好，我是陈少涵 ‍🏫</h3>
+          <p>岭南师范学院教育技术学 2027 届本科在读，现任广州英荔教育教研实习老师（AI 课程方向）。有佛山市顺德区承德小学信息技术实习教学、Scratch 编程授课、AIGC 课程研发等教学相关经历。性格开朗、能量充足，对交付质量有洁癖。</p>
+          <div class="info-strip">
+            <span class="info-pill"><span class="pill-dot"></span><span class="pill-label">姓名</span> <span class="pill-val">陈少涵</span></span>
+            <span class="info-pill"><span class="pill-dot"></span><span class="pill-label">坐标</span> <span class="pill-val">广州</span></span>
+            <span class="info-pill"><span class="pill-dot"></span><span class="pill-label">电话</span> <span class="pill-val">13828411609</span></span>
+            <span class="info-pill"><span class="pill-dot"></span><span class="pill-label">邮箱</span> <span class="pill-val">13828411609@163.com</span></span>
+            <span class="info-pill"><span class="pill-dot"></span><span class="pill-label">学历</span> <span class="pill-val">本科 · 教育技术学</span></span>
+            <span class="info-pill"><span class="pill-dot"></span><span class="pill-label">状态</span> <span class="pill-val">求职中 · 可实习/全职</span></span>
+          </div>
+          <div class="capability-blocks">
+            <div class="capability-item">
+              <div class="capability-title"><span class="cap-num">01</span> AI 内容生产实操</div>
+              <p class="capability-desc">用即梦做文生图、图生视频和文生视频，熟悉提示词中主体、风格、镜头、光影的写法，掌握运镜、时长、比例等参数调优，习惯每版复盘迭代。</p>
+            </div>
+            <div class="capability-item">
+              <div class="capability-title"><span class="cap-num">02</span> 需求 → 方案转化</div>
+              <p class="capability-desc">在教育科技公司参与课程体系研发和 AIGC 课程规划，完整走过需求调研、方案设计、资源产出、试讲迭代的闭环，独立撰写成套教案与说明文档，擅长把模糊需求拆成可执行的步骤和交付物。</p>
+            </div>
+            <div class="capability-item">
+              <div class="capability-title"><span class="cap-num">03</span> 团队带领与执行落地</div>
+              <p class="capability-desc">实习期间担任实习小组组长，负责目标拆解、按特长分配任务、组织复盘与主动补位，获评校级优秀实习生；任院团委实践部副部长，统筹策划"三下乡"等大型活动。不只是能自己干活，也能带着团队把事情推完。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="checker-divider"></div>
+
+  <section class="section" id="experience">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-label-row">
+          <span class="section-label-tag">💼 EXPERIENCE</span>
+        </div>
+        <h2 class="section-title">职业经历</h2>
+        <div class="section-dots">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="timeline-card fade-up">
+        <ul class="timeline">
+          <li class="timeline-item">
+            <div class="timeline-period">2026.07 — 至今</div>
+            <div class="timeline-role">教研老师（AI 课程方向）</div>
+            <div class="timeline-org">广州英荔教育科技有限公司</div>
+            <div class="timeline-desc">AIGC 课程内容规划与落地，面向 430 课后服务场景。完成"需求调研 → 课程设计 → 教学资源产出 → 试讲迭代"全流程。常态化使用即梦等 AI 工具生成教学配图与数字人视频，参与乐高 WeDo/SPIKE、CSAI 机器人与编程课程体系研发。独立产出课程配套 PPT、教案与说明文档。</div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-period">2026.03 — 2026.06</div>
+            <div class="timeline-role">信息技术实习教师 · 实习小组组长</div>
+            <div class="timeline-org">佛山市顺德区北滘镇承德小学</div>
+            <div class="timeline-desc">独立承担六年级 Scratch 图形化编程教学，完成备课、授课与学生实操指导的全流程课堂驾驭。担任实习小组组长，负责组内目标拆解、任务分配与进度复盘。协助学校筹备 AI 赋能教育教师专项比赛，负责 AI 技术与课堂融合的教学设计与资源制作。获评校级优秀实习生。</div>
+          </li>
+          <li class="timeline-item">
+            <div class="timeline-period">2025.01 — 2025.02</div>
+            <div class="timeline-role">教务管理（寒假实习）</div>
+            <div class="timeline-org">学而思</div>
+            <div class="timeline-desc">负责教学资料与学员档案的分类归档、教辅盘点。课前完成教具与设备筹备调试，协调师生与家长需求、处置突发状况，为授课提供完整的运营支持。</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="checker-divider"></div>
+
+  <section class="section" id="honors">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-label-row">
+          <span class="section-label-tag">🏆 HONORS</span>
+        </div>
+        <h2 class="section-title">荣誉与证书</h2>
+        <div class="section-dots">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+      <p class="section-desc">以下为实习与教学期间获得的<strong>真实</strong>荣誉，按重要性与级别排序。<strong>优先级</strong>由高到低（P1 最高），<strong>级别</strong>以徽章标注：<span class="award-level level-city">市级</span> <span class="award-level level-district">区级</span> <span class="award-level level-town">镇级</span> <span class="award-level level-school">校级</span>。证书原图统一展示在页面最下方的「荣誉证书」区。</p>
+      <div class="awards-table-wrap fade-up">
+        <table class="awards-table">
+          <thead>
+            <tr>
+              <th>优先级</th>
+              <th>奖项 / 荣誉</th>
+              <th>级别</th>
+              <th>颁发单位</th>
+              <th>时间</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="award-highlight">
+              <td class="award-priority">P1</td>
+              <td>顺德区新教师跟岗培训 · 受邀主讲《AI 数字人制作与教学应用》<span class="award-tag">重点</span></td>
+              <td><span class="award-level level-town">镇级</span></td>
+              <td>佛山市顺德区北滘镇教育教学研究中心</td>
+              <td>2026.05</td>
+            </tr>
+            <tr>
+              <td class="award-priority">P2</td>
+              <td>佛山市第十六届“小小科学家”优秀辅导教师</td>
+              <td><span class="award-level level-city">市级</span></td>
+              <td>佛山市教育局教学研究室</td>
+              <td>2026.07</td>
+            </tr>
+            <tr>
+              <td class="award-priority">P3</td>
+              <td>第十六届“小小科学家”中小学生科学实验活动展示交流中荣获小学高年级物理组一等奖（刘紫冉）</td>
+              <td><span class="award-level level-city">市级</span></td>
+              <td>佛山市教育局教学研究室</td>
+              <td>2026.07</td>
+            </tr>
+            <tr>
+              <td class="award-priority">P4</td>
+              <td>第十六届“小小科学家”中小学生科学实验活动展示交流中荣获小学高年级生物组二等奖（吴柏贤）</td>
+              <td><span class="award-level level-city">市级</span></td>
+              <td>佛山市教育局教学研究室</td>
+              <td>2026.07</td>
+            </tr>
+            <tr>
+              <td class="award-priority">P5</td>
+              <td>第十六届“小小科学家”中小学生科学实验活动展示交流中荣获小学低年级物理组三等奖（刘晓宁）</td>
+              <td><span class="award-level level-city">市级</span></td>
+              <td>佛山市教育局教学研究室</td>
+              <td>2026.07</td>
+            </tr>
+            <tr>
+              <td class="award-priority">P6</td>
+              <td>指导学生获顺德区程序设计素养展示活动二等奖（麦朗晖）</td>
+              <td><span class="award-level level-district">区级</span></td>
+              <td>顺德区</td>
+              <td>2026.05</td>
+            </tr>
+            <tr>
+              <td class="award-priority">P7</td>
+              <td>承德小学电脑制作活动 · 电子板报一等奖（《竹韵匠心——我与竹编的编织之旅》）</td>
+              <td><span class="award-level level-school">校级</span></td>
+              <td>承德小学</td>
+              <td>2026</td>
+            </tr>
+            <tr>
+              <td class="award-priority">P8</td>
+              <td>优秀实习生</td>
+              <td><span class="award-level level-school">校级</span></td>
+              <td>承德小学</td>
+              <td>2026.06</td>
+            </tr>
+            <tr>
+              <td class="award-priority">P9</td>
+              <td>优秀实习班主任</td>
+              <td><span class="award-level level-school">校级</span></td>
+              <td>承德小学</td>
+              <td>2026</td>
+            </tr>
+            <tr>
+              <td class="award-priority">P10</td>
+              <td>实习教师课堂展示活动《定速巡航的控制》</td>
+              <td><span class="award-level level-school">校级</span></td>
+              <td>承德小学</td>
+              <td>2026</td>
+            </tr>
+            <tr>
+              <td class="award-priority">P11</td>
+              <td>实习教师课堂展示活动《两位数的四则运算——条件判断与广播交互》</td>
+              <td><span class="award-level level-school">校级</span></td>
+              <td>承德小学</td>
+              <td>2026</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="checker-divider"></div>
+
+  <section class="projects-section" id="works">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-label-row">
+          <span class="section-label-tag">🎨 WORKS</span>
+        </div>
+        <h2 class="section-title">精选作品</h2>
+        <div class="section-dots">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="projects-grid">
+
+        <article class="project-card fade-up" tabindex="0" role="button" aria-label="查看项目：植物生存有办法" data-project="0">
+          <div class="card-preview"><img src="images/compressed/植物生存-01.webp" alt="植物生存有办法课件预览"></div>
+          <div class="card-body">
+            <div class="card-category">课件设计 + 教学视频</div>
+            <h3 class="card-title">植物生存有办法</h3>
+            <div class="card-meta">小学科学 · 佛山市首届新教师风采展示活动 · 2026</div>
+            <div class="card-hint">点击查看详情 →</div>
+          </div>
+        </article>
+
+        <article class="project-card fade-up" tabindex="0" role="button" aria-label="查看项目：挪动雷神之锤的秘密" data-project="1">
+          <div class="card-preview"><img src="images/compressed/雷神之锤-01.webp" alt="挪动雷神之锤的秘密课件预览"></div>
+          <div class="card-body">
+            <div class="card-category">课件设计</div>
+            <h3 class="card-title">挪动雷神之锤的秘密</h3>
+            <div class="card-meta">小学科学 · 佛山市首届新教师风采展示活动 · 2026</div>
+            <div class="card-hint">点击查看详情 →</div>
+          </div>
+        </article>
+
+        <article class="project-card fade-up" tabindex="0" role="button" aria-label="查看项目：动手做游校园" data-project="2">
+          <div class="card-preview"><img src="images/compressed/动手游校园-01.webp" alt="动手做游校园课件预览"></div>
+          <div class="card-body">
+            <div class="card-category">校本课程 PDF 课件</div>
+            <h3 class="card-title">动手做游校园</h3>
+            <div class="card-meta">承德小学三年级校本课程 · 2026</div>
+            <div class="card-hint">点击查看详情 →</div>
+          </div>
+        </article>
+
+        <article class="project-card fade-up" tabindex="0" role="button" aria-label="查看项目：单双数出题器" data-project="3">
+          <div class="card-preview"><img src="images/compressed/单双数-01.webp" alt="单双数出题器课件预览"></div>
+          <div class="card-body">
+            <div class="card-category">互动教学工具</div>
+            <h3 class="card-title">单双数出题器</h3>
+            <div class="card-meta">日常备课作品 · 可交互 HTML 游戏 · 2026</div>
+            <div class="card-hint">点击查看详情 →</div>
+          </div>
+        </article>
+
+        <article class="project-card fade-up" tabindex="0" role="button" aria-label="查看项目：骑鹅旅行记" data-project="4">
+          <div class="card-preview"><img src="images/compressed/骑鹅旅行记-01.webp" alt="骑鹅旅行记演讲比赛课件预览"></div>
+          <div class="card-body">
+            <div class="card-category">演讲课件 + 演讲视频</div>
+            <h3 class="card-title">骑鹅旅行记</h3>
+            <div class="card-meta">演讲比赛 · 2026</div>
+            <div class="card-hint">点击查看详情 →</div>
+          </div>
+        </article>
+
+        <article class="project-card fade-up" tabindex="0" role="button" aria-label="查看项目：爱护动植物" data-project="5">
+          <div class="card-preview"><img src="images/compressed/爱护动植物-01.webp" alt="爱护动植物课件预览"></div>
+          <div class="card-body">
+            <div class="card-category">展示课课件 + 课堂视频</div>
+            <h3 class="card-title">爱护动植物</h3>
+            <div class="card-meta">道德与法治展示课 · 2026</div>
+            <div class="card-hint">点击查看详情 →</div>
+          </div>
+        </article>
+
+        <article class="project-card fade-up" tabindex="0" role="button" aria-label="查看项目：竹韵匠心——我与竹编的编织之旅" data-project="6">
+          <div class="card-preview"><img src="images/compressed/竹韵匠心-01.webp" alt="竹韵匠心电子板报预览"></div>
+          <div class="card-body">
+            <div class="card-category">电子板报</div>
+            <h3 class="card-title">竹韵匠心——我与竹编的编织之旅</h3>
+            <div class="card-meta">承德小学电脑制作活动 · 电子板报一等奖 · 2026</div>
+            <div class="card-hint">点击查看详情 →</div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="checker-divider"></div>
+
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-label-row">
+          <span class="section-label-tag">💌 CONTACT</span>
+        </div>
+        <h2 class="section-title">联系方式</h2>
+        <div class="section-dots">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="contact-card fade-up">
+        <h3 class="contact-title">让我们保持联系吧 🌷</h3>
+        <p class="contact-desc">如果你对我的经历感兴趣，或者想聊聊合作，欢迎随时找我～</p>
+        <div class="contact-items">
+          <span class="contact-item">✉️ 13828411609@163.com</span>
+          <span class="contact-item"> 13828411609</span>
+          <span class="contact-item">📍 广州</span>
+        </div>
+      </div>
+    </div>
+    <span class="deco" style="bottom:20%;right:10%;font-size:1.2rem;">⭐</span>
+  </section>
+
+  <div class="checker-divider"></div>
+
+  <section class="section" id="certificates">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-label-row">
+          <span class="section-label-tag">📜 CERTIFICATES</span>
+        </div>
+        <h2 class="section-title">荣誉证书（原图）</h2>
+        <div class="section-dots">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+      <p class="section-desc">上方「奖项表」中全部奖项的证书原件。点击任意缩略图可查看清晰大图。</p>
+      <div class="honors-grid fade-up">
+        <a class="honor-item award-highlight" href="images/证书-AI数字人讲座.jpg" target="_blank" title="查看原图">
+          <div class="honor-img-wrap"><img src="images/compressed/证书-AI数字人讲座.webp" alt="AI数字人制作与教学应用讲座证书" loading="lazy"></div>
+          <div class="honor-body"><div class="honor-title">P1 · 顺德区新教师跟岗培训 · 受邀主讲《AI 数字人制作与教学应用》</div><div class="honor-meta">镇级 · 佛山市顺德区北滘镇教育教学研究中心 · 2026.05 · 与 AI 内容生产直接相关</div></div>
+        </a>
+        <a class="honor-item" href="images/证书-小小科学家优秀辅导教师.jpg" target="_blank" title="查看原图">
+          <div class="honor-img-wrap"><img src="images/compressed/证书-小小科学家优秀辅导教师.webp" alt="小小科学家优秀辅导教师荣誉证书" loading="lazy"></div>
+          <div class="honor-body"><div class="honor-title">P2 · 佛山市第十六届“小小科学家”优秀辅导教师</div><div class="honor-meta">市级 · 佛山市教育局教学研究室 · 2026.07</div></div>
+        </a>
+        <a class="honor-item" href="images/证书-指导学生-刘紫冉.jpg" target="_blank" title="查看原图">
+          <div class="honor-img-wrap"><img src="images/compressed/证书-指导学生-刘紫冉.webp" alt="指导学生获奖证书" loading="lazy"></div>
+          <div class="honor-body"><div class="honor-title">P3 · 第十六届“小小科学家”展示交流中荣获小学高年级物理组一等奖</div><div class="honor-meta">市级 · 刘紫冉 · 2026.07</div></div>
+        </a>
+        <a class="honor-item" href="images/证书-指导学生-吴柏贤.png" target="_blank" title="查看原图">
+          <div class="honor-img-wrap"><img src="images/compressed/证书-指导学生-吴柏贤.webp" alt="指导学生获奖证书" loading="lazy"></div>
+          <div class="honor-body"><div class="honor-title">P4 · 第十六届“小小科学家”展示交流中荣获小学高年级生物组二等奖</div><div class="honor-meta">市级 · 吴柏贤 · 2026.07</div></div>
+        </a>
+        <a class="honor-item" href="images/证书-指导学生-刘晓宁.jpg" target="_blank" title="查看原图">
+          <div class="honor-img-wrap"><img src="images/compressed/证书-指导学生-刘晓宁.webp" alt="指导学生获奖证书" loading="lazy"></div>
+          <div class="honor-body"><div class="honor-title">P5 · 第十六届“小小科学家”展示交流中荣获小学低年级物理组三等奖</div><div class="honor-meta">市级 · 刘晓宁 · 2026.07</div></div>
+        </a>
+        <a class="honor-item" href="images/证书-指导学生-麦朗晖.jpg" target="_blank" title="查看原图">
+          <div class="honor-img-wrap"><img src="images/compressed/证书-指导学生-麦朗晖.webp" alt="指导学生获奖证书" loading="lazy"></div>
+          <div class="honor-body"><div class="honor-title">P6 · 指导学生获顺德区程序设计素养展示活动二等奖</div><div class="honor-meta">区级 · 麦朗晖 · 2026.05</div></div>
+        </a>
+        <a class="honor-item" href="images/证书-电子板报一等奖.jpg" target="_blank" title="查看原图">
+          <div class="honor-img-wrap"><img src="images/compressed/证书-电子板报一等奖.webp" alt="电子板报一等奖奖状" loading="lazy"></div>
+          <div class="honor-body"><div class="honor-title">P7 · 承德小学电脑制作活动电子板报一等奖</div><div class="honor-meta">校级 · 《竹韵匠心》· 2026</div></div>
+        </a>
+        <a class="honor-item" href="images/证书-优秀实习生.jpg" target="_blank" title="查看原图">
+          <div class="honor-img-wrap"><img src="images/compressed/证书-优秀实习生.webp" alt="优秀实习生荣誉证书" loading="lazy"></div>
+          <div class="honor-body"><div class="honor-title">P8 · 优秀实习生</div><div class="honor-meta">校级 · 承德小学 · 2026.06</div></div>
+        </a>
+        <a class="honor-item" href="images/证书-优秀实习班主任.jpg" target="_blank" title="查看原图">
+          <div class="honor-img-wrap"><img src="images/compressed/证书-优秀实习班主任.webp" alt="优秀实习班主任奖状" loading="lazy"></div>
+          <div class="honor-body"><div class="honor-title">P9 · 优秀实习班主任</div><div class="honor-meta">校级 · 承德小学</div></div>
+        </a>
+        <a class="honor-item" href="images/证书-实习教师课堂展示-定速巡航.jpg" target="_blank" title="查看原图">
+          <div class="honor-img-wrap"><img src="images/compressed/证书-实习教师课堂展示-定速巡航.webp" alt="实习教师课堂展示活动奖状" loading="lazy"></div>
+          <div class="honor-body"><div class="honor-title">P10 · 实习教师课堂展示活动《定速巡航的控制》</div><div class="honor-meta">校级 · 承德小学 · 2026</div></div>
+        </a>
+        <a class="honor-item" href="images/证书-实习教师课堂展示-四则运算.jpg" target="_blank" title="查看原图">
+          <div class="honor-img-wrap"><img src="images/compressed/证书-实习教师课堂展示-四则运算.webp" alt="实习教师课堂展示活动奖状" loading="lazy"></div>
+          <div class="honor-body"><div class="honor-title">P11 · 实习教师课堂展示活动《两位数的四则运算》</div><div class="honor-meta">校级 · 承德小学 · 2026</div></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>🎀 © 2026 陈少涵 · 用 ♥ 与 CSS 制作 🎀</p>
+      <p style="display:block;margin-top:0.3rem;font-size:0.7rem;">教育技术学 2027 届 · 本作品集所有内容均为真实个人作品</p>
+    </div>
+  </footer>
+
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-label="项目详情">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose" aria-label="关闭">&times;</button>
+      <div class="modal-body">
+        <div class="modal-category" id="modalCategory"></div>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-year" id="modalYear"></div>
+        <div class="modal-section"><h3>项目背景</h3><p id="modalBackground"></p></div>
+        <div class="modal-section"><h3>我的职责</h3><p id="modalRole"></p></div>
+        <div class="modal-section"><h3>成果与产出</h3><p id="modalResult"></p></div>
+      </div>
+      <div class="modal-preview" id="modalPreview"></div>
+    </div>
+  </div>
+
+  <script>
+    const projects = [
+      {
+        title: '植物生存有办法', category: '课件设计 + 教学视频', year: '2026',
+        background: '面向小学科学课程，围绕"植物如何适应环境"设计教学课件与配套视频，帮助学生理解植物生存的多样性策略。该课件参与佛山市首届新教师风采展示活动。',
+        role: '团队项目，负责课件主体视觉设计、AIGC 数字人与视频生成、PPT 美化与排版，承担约 80% 的课件制作工作量。使用即梦生成教学配图与数字人视频，用豆包和 DeepSeek 辅助文案优化，用元宝搜集素材。',
+        result: '课件作为佛山市首届新教师风采展示活动参展作品完成现场展示与交流，非本人名义获奖。课件包含完整的教学流程设计（导入—探究—总结），配套数字人视频用于课堂辅助教学。',
+        previewBg: '#e4e8d8',
+        images: ['images/compressed/植物生存-01.webp', 'images/compressed/植物生存-02.webp', 'images/compressed/植物生存-03.webp'],
+        videos: [{ src: 'videos/植物生存-媒体1.mp4', label: '教学视频 — 媒体1' }, { src: 'videos/植物生存-探秘荷叶.mp4', label: '教学视频 — 探秘荷叶' }]
+      },
+      {
+        title: '挪动雷神之锤的秘密', category: '课件设计', year: '2026',
+        background: '以趣味科学实验为载体，通过"挪动雷神之锤"这一引人入胜的情境，引导学生探索力学与摩擦力的科学原理。该课件参与佛山市首届新教师风采展示活动，课件设计注重互动性与探究式学习。',
+        role: '团队项目，负责课件主体视觉设计、AIGC 内容生成与 PPT 美化，承担约 80% 的课件制作工作量。使用即梦生成实验演示相关的视觉素材与数字人讲解视频，用豆包辅助教学文案润色，统一课件视觉风格与排版。',
+        result: '课件作为佛山市首届新教师风采展示活动参展作品完成现场展示与交流，非本人名义获奖。课件以游戏化情境驱动教学，有效提升了学生的课堂参与度和科学探究兴趣。',
+        previewBg: '#e8e2d4',
+        images: ['images/compressed/雷神之锤-01.webp', 'images/compressed/雷神之锤-02.webp', 'images/compressed/雷神之锤-03.webp', 'images/compressed/雷神之锤-04.webp']
+      },
+      {
+        title: '动手做游校园', category: '校本课程 PDF 课件', year: '2026',
+        background: '为承德小学三年级开发的校本课程，属于"动手游校园"系列。课程引导学生通过实地观察、测量和记录，认识校园环境与空间关系，融合信息技术与综合实践。',
+        role: '团队项目，负责课件视觉设计与 AI 素材生成。使用即梦生成课程配图，用豆包和 DeepSeek 辅助课程内容文案优化，完成 PDF 课件排版与视觉美化。',
+        result: '作为校本课程正式投入三年级教学使用，覆盖多个班级。课件结构清晰，便于学生跟随操作。',
+        previewBg: '#dce4e8',
+        images: ['images/compressed/动手游校园-01.webp', 'images/compressed/动手游校园-02.webp', 'images/compressed/动手游校园-03.webp']
+      },
+      {
+        title: '单双数出题器', category: '互动教学工具（PPT + HTML 互动游戏）', year: '2026',
+        background: '日常备课中开发的互动教学辅助工具，用于低年级数学课堂。学生可以在网页上直接操作，通过游戏化练习巩固单双数的概念认知。',
+        role: '独立完成工具设计与开发，包括教学逻辑设计、HTML/CSS/JavaScript 交互实现与 PPT 配套课件制作。使用 DeepSeek 辅助代码生成与逻辑调试。',
+        result: '产出可交互的 HTML 游戏页面与配套 PPT 课件。工具可直接在浏览器中运行，无需安装任何软件，方便课堂即时使用。',
+        previewBg: '#e8dce8',
+        images: ['images/compressed/单双数-01.webp', 'images/compressed/单双数-02.webp'],
+        demo: '单双数游戏.html'
+      },
+      {
+        title: '骑鹅旅行记 · 演讲比赛', category: '演讲课件 + 演讲视频', year: '2026',
+        background: '以经典文学作品《骑鹅旅行记》为主题的演讲比赛作品，将文学阅读与演讲表达相结合，通过课件视觉辅助呈现故事脉络与个人感悟。',
+        role: '团队项目，负责 PPT 课件视觉设计与演讲视频制作。使用即梦生成演讲辅助视觉素材，用元宝搜集文学背景资料，完成课件整体视觉呈现与排版美化。',
+        result: '完成完整的演讲比赛作品，包含演讲课件与现场演讲视频。课件以故事线为主轴，配合视觉元素增强演讲感染力。',
+        previewBg: '#e8e0d4',
+        images: ['images/compressed/骑鹅旅行记-01.webp'],
+        videos: [{ src: 'videos/骑鹅旅行记-演讲.mp4', label: '演讲比赛现场视频' }]
+      },
+      {
+        title: '爱护动植物', category: '展示课课件 + 课堂视频', year: '2026',
+        background: '面向小学道德与法治课程的展示课作品，围绕"爱护动植物"主题，引导学生建立尊重生命、保护自然的意识。课程设计注重情感体验与价值引导。',
+        role: '团队项目，负责 AIGC 素材生成与课件美化。使用即梦生成教学配图与数字人视频片段，用豆包辅助教学文案优化，完成展示课课件的视觉设计与排版。',
+        result: '作为道德与法治展示课完成教学展示，课件与课堂视频用于教学交流与研讨。',
+        previewBg: '#dce8dc',
+        images: ['images/compressed/爱护动植物-01.webp', 'images/compressed/爱护动植物-02.webp', 'images/compressed/爱护动植物-03.webp'],
+        videos: [{ src: 'videos/爱护动植物-课堂.mp4', label: '展示课课堂实录' }]
+      },
+      {
+        title: '竹韵匠心——我与竹编的编织之旅', category: '电子板报', year: '2026',
+        background: '以中国传统竹编工艺为主题，创作电子板报作品《竹韵匠心——我与竹编的编织之旅》，呈现竹编文化的历史、技艺与个人体验，融合图文排版与信息可视化。',
+        role: '与李秋月老师共同完成作品。负责内容策划、图文排版、视觉设计与电子板报制作，将竹编文化元素转化为清晰的版面叙事。',
+        result: '在 2026 年承德小学电脑制作活动中荣获电子板报项目一等奖。',
+        previewBg: '#e8d8c8',
+        images: ['images/compressed/竹韵匠心-01.webp', 'images/compressed/竹韵匠心-02.webp']
+      }
+    ];
+
+    const overlay = document.getElementById('modalOverlay');
+    const modal = document.getElementById('modal');
+    const modalClose = document.getElementById('modalClose');
+    const modalPreview = document.getElementById('modalPreview');
+    const modalCategory = document.getElementById('modalCategory');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalYear = document.getElementById('modalYear');
+    const modalBackground = document.getElementById('modalBackground');
+    const modalRole = document.getElementById('modalRole');
+    const modalResult = document.getElementById('modalResult');
+    let lastFocused = null;
+
+    function openProject(index) {
+      const p = projects[index];
+      if (!p) return;
+      lastFocused = document.activeElement;
+      let mediaHTML = '';
+      const hasImages = p.images && p.images.length > 0;
+      const hasVideos = p.videos && p.videos.length > 0;
+      const hasDemo = p.demo;
+
+      if (hasDemo) {
+        mediaHTML += '<div style="margin-bottom:1.5rem;"><div style="font-size:0.85rem;color:var(--brown);font-weight:700;margin-bottom:0.5rem;">互动演示</div><iframe src="' + p.demo + '" style="width:100%;height:450px;border:2px dashed var(--brown-pale);border-radius:12px;background:#fff;" title="' + p.title + ' 互动演示"></iframe><a href="' + p.demo + '" target="_blank" style="display:inline-block;margin-top:0.5rem;font-size:0.85rem;color:var(--brown);font-weight:500;text-decoration:underline;">在新窗口打开 →</a></div>';
+      }
+      if (hasImages) {
+        p.images.forEach(function(src, i) {
+          mediaHTML += '<div class="media-item"><img src="' + src + '" alt="' + p.title + ' 第' + (i+1) + '页"><div class="media-caption">第 ' + (i+1) + ' / ' + p.images.length + ' 页</div></div>';
+        });
+      }
+      if (hasVideos) {
+        p.videos.forEach(function(v) {
+          mediaHTML += '<div style="margin-top:1rem;"><video controls preload="metadata" style="width:100%;border-radius:12px;background:#000;"><source src="' + v.src + '" type="video/mp4">您的浏览器不支持视频播放。</video><div style="font-size:0.78rem;color:var(--text-light);margin-top:0.35rem;">' + v.label + '</div></div>';
+        });
+      }
+      if (!mediaHTML) {
+        const card = document.querySelector('[data-project="' + index + '"]');
+        const previewImg = card ? card.querySelector('.card-preview img') : null;
+        if (previewImg) mediaHTML = '<div style="height:200px;display:flex;align-items:center;justify-content:center;background:' + p.previewBg + ';border-radius:12px;"><img src="' + previewImg.src + '" style="max-width:100%;max-height:100%;object-fit:contain;" alt="' + p.title + '"></div>';
+      }
+      if (p.category !== '电子板报') {
+        mediaHTML += '<div class="disclaimer">以上为课件节选页面，非完整作品。</div>';
+      }
+      modalPreview.innerHTML = mediaHTML;
+      modalCategory.textContent = p.category;
+      modalTitle.textContent = p.title;
+      modalYear.textContent = p.year;
+      modalBackground.textContent = p.background;
+      modalRole.textContent = p.role;
+      modalResult.textContent = p.result;
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      modalClose.focus();
+    }
+
+    function closeModal() {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+      if (lastFocused) lastFocused.focus();
+    }
+
+    document.querySelectorAll('.project-card').forEach(function(card) {
+      card.addEventListener('click', function() { openProject(parseInt(card.dataset.project, 10)); });
+      card.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openProject(parseInt(card.dataset.project, 10)); } });
+    });
+    modalClose.addEventListener('click', closeModal);
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal(); });
+
+    // Scroll animation
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-up').forEach(function(el) {
+      observer.observe(el);
+    });
+
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.header-nav a');
+    window.addEventListener('scroll', function() {
+      let current = '';
+      sections.forEach(function(section) {
+        const sectionTop = section.offsetTop - 100;
+        if (window.scrollY >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+      navLinks.forEach(function(link) {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

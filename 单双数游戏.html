@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>数字侦探：倒计时挑战 | 单双数大作战</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(145deg, #1a2a3a 0%, #0f1a24 100%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            font-family: 'Segoe UI', 'Poppins', 'Fredoka One', 'Comic Neue', system-ui, sans-serif;
+            padding: 10px;
+        }
+
+        .game-container {
+            max-width: 650px;
+            width: 100%;
+            background: rgba(255,248,225,0.95);
+            border-radius: 30px 30px 25px 25px;
+            box-shadow: 0 25px 40px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.6);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .game-header {
+            background: #ffcd7e;
+            padding: 20px 20px 15px 20px;
+            text-align: center;
+            border-bottom: 5px solid #f0a54b;
+        }
+
+        .game-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            color: #3b2a1f;
+            text-shadow: 3px 3px 0 #ffb347;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .sub {
+            font-size: 1rem;
+            background: #fdf8ed;
+            display: inline-block;
+            padding: 5px 18px;
+            border-radius: 40px;
+            color: #b45f1b;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .digital-area {
+            background: #2e2c2a;
+            margin: 15px 20px 10px 20px;
+            border-radius: 30px;
+            padding: 15px 10px;
+            box-shadow: inset 0 0 0 4px #f7e5c2, 0 12px 25px rgba(0,0,0,0.3);
+        }
+
+        .number-screen {
+            background: #fef2dc;
+            border-radius: 30px;
+            text-align: center;
+            padding: 15px 10px;
+            font-size: 5rem;
+            font-weight: 800;
+            font-family: monospace, 'Courier New', monospace;
+            letter-spacing: 8px;
+            color: #2c3e2f;
+            text-shadow: 4px 4px 0 #d4c5a9;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.1), 0 5px 0 #bba77a;
+            margin-bottom: 10px;
+        }
+
+        .question-prompt {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: #ffecb3;
+            width: fit-content;
+            margin: 0 auto;
+            padding: 5px 25px;
+            border-radius: 60px;
+            color: #a55407;
+        }
+
+        .stats-panel {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 10px 20px 15px 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: #fff6e8;
+            border-radius: 50px;
+            padding: 12px 5px;
+            text-align: center;
+            box-shadow: 0 6px 0 #c5aa7a;
+            border: 1px solid #ffdead;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            font-weight: bold;
+            background: #e9dccd;
+            display: inline-block;
+            padding: 2px 15px;
+            border-radius: 40px;
+            color: #5e3a1c;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-top: 6px;
+            color: #2c5a2a;
+            line-height: 1;
+            font-family: monospace;
+        }
+
+        .timer-warning {
+            color: #c02222;
+            animation: pulse 0.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { text-shadow: 0 0 0 red; }
+            100% { text-shadow: 0 0 6px rgb(255, 80, 40); }
+        }
+
+        .choice-buttons {
+            display: flex;
+            gap: 15px;
+            margin: 5px 20px 15px 20px;
+        }
+
+        .btn {
+            flex: 1;
+            border: none;
+            font-size: 2.2rem;
+            font-weight: bold;
+            padding: 20px 0;
+            border-radius: 120px;
+            cursor: pointer;
+            transition: 0.05s linear;
+            font-family: inherit;
+            letter-spacing: 4px;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.2);
+            color: white;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+        }
+
+        .btn-single {
+            background: #3b8db5;
+            border-bottom: 4px solid #1f5673;
+        }
+        .btn-single:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+        }
+
+        .btn-double {
+            background: #e7a13e;
+            border-bottom: 4px solid #b4621a;
+        }
+        .btn-double:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+        }
+
+        .restart-area {
+            display: flex;
+            justify-content: center;
+            margin: 5px 20px 15px 20px;
+        }
+
+        .restart-btn {
+            background: #ffb347;
+            border: none;
+            font-size: 1.3rem;
+            font-weight: bold;
+            padding: 12px 35px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #a45d2e;
+            transition: 0.05s linear;
+            color: #2d281c;
+        }
+
+        .restart-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #a45d2e;
+        }
+
+        .message-area {
+            text-align: center;
+            margin: 0 20px 15px 20px;
+            background: #efe2cc;
+            border-radius: 30px;
+            padding: 6px;
+            font-weight: bold;
+            color: #62411e;
+            font-size: 0.9rem;
+        }
+
+        .game-over-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            font-family: inherit;
+        }
+
+        .game-over-card {
+            background: #ffecd6;
+            border-radius: 70px;
+            padding: 30px 40px;
+            text-align: center;
+            max-width: 350px;
+            box-shadow: 0 20px 40px black;
+            border: 4px solid #ffb347;
+        }
+
+        .game-over-card h2 {
+            font-size: 3rem;
+            margin: 0;
+            color: #b33f00;
+        }
+
+        .game-over-card p {
+            font-size: 1.5rem;
+            margin: 15px 0;
+        }
+
+        .play-again-btn {
+            background: #ff9f2e;
+            border: none;
+            font-size: 1.5rem;
+            padding: 10px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 10px;
+            background: #f3e5c9;
+            color: #785e36;
+        }
+
+        .disabled-click {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 500px) {
+            .number-screen { font-size: 4rem; }
+            .btn { font-size: 1.8rem; padding: 15px 0; }
+            .stat-value { font-size: 1.8rem; }
+            .game-header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container" id="gameApp">
+    <div class="game-header">
+        <h1>
+            <span>⏰</span> 倒计时侦探 · 单双生死战 <span>⚡</span>
+        </h1>
+        <div class="sub">🔥 时间归零即失败 · 答对+2秒 · 答错-1秒 🔥</div>
+    </div>
+
+    <div class="digital-area">
+        <div class="number-screen" id="currentNumberDisplay">?</div>
+        <div class="question-prompt">🤔 单数还是双数？快选！ 🤔</div>
+    </div>
+
+    <div class="stats-panel">
+        <div class="stat-card">
+            <div class="stat-label">📌 当前数字</div>
+            <div class="stat-value" id="statNumber">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">🏆 得分</div>
+            <div class="stat-value" id="statScore">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">⏱️ 剩余时间</div>
+            <div class="stat-value" id="statTimer">10.0</div>
+        </div>
+    </div>
+
+    <div class="choice-buttons">
+        <button class="btn btn-single" id="singleBtn">🔵 单数</button>
+        <button class="btn btn-double" id="doubleBtn">🟠 双数</button>
+    </div>
+
+    <div class="restart-area">
+        <button class="restart-btn" id="restartBtn">⟳ 重新开始 ⟳</button>
+    </div>
+
+    <div class="message-area" id="messageBox">
+        💡 10秒倒计时开始！答对+2秒，答错-1秒，时间归零就输啦！
+    </div>
+    <footer>
+        ⏰ 倒计时变量 | 得分变量 | 数字变量 &nbsp;&nbsp; 挑战极限反应力！
+    </footer>
+</div>
+
+<script>
+    // ---------- 倒计时模式 (B) ----------
+    // 规则：
+    // 初始时间 10 秒
+    // 答对：+2秒，+10分
+    // 答错：-1秒，-2分
+    // 时间 ≤ 0 → 游戏结束，显示失败弹窗
+    // 重置后重新开始
+
+    const currentNumberDisplay = document.getElementById('currentNumberDisplay');
+    const statNumberSpan = document.getElementById('statNumber');
+    const statScoreSpan = document.getElementById('statScore');
+    const statTimerSpan = document.getElementById('statTimer');
+    const singleBtn = document.getElementById('singleBtn');
+    const doubleBtn = document.getElementById('doubleBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const messageBox = document.getElementById('messageBox');
+    const gameContainer = document.getElementById('gameApp');
+
+    let currentNumber = 0;
+    let score = 0;
+    let timeLeft = 10.0;      // 倒计时变量（秒）
+    let timerInterval = null;
+    let isGameActive = true;    // 游戏是否进行中（未结束）
+    let isGameOverFlag = false;
+
+    // 生成随机数 0-99
+    function getRandomNumber() {
+        return Math.floor(Math.random() * 100);
+    }
+
+    function updateUI() {
+        currentNumberDisplay.innerText = currentNumber;
+        statNumberSpan.innerText = currentNumber;
+        statScoreSpan.innerText = score;
+        statTimerSpan.innerText = timeLeft.toFixed(1);
+        
+        // 时间小于3秒时加红色警告样式
+        if (timeLeft <= 3.0 && isGameActive && !isGameOverFlag) {
+            statTimerSpan.classList.add('timer-warning');
+        } else {
+            statTimerSpan.classList.remove('timer-warning');
+        }
+    }
+
+    // 判断单双
+    function isOdd(num) {
+        return num % 2 !== 0;
+    }
+
+    let msgTimeout = null;
+    function setTempMessage(msg, isError = false) {
+        if (msgTimeout) clearTimeout(msgTimeout);
+        messageBox.style.transition = "0.1s";
+        messageBox.innerHTML = msg;
+        if (isError) {
+            messageBox.style.background = "#ffd1b3";
+            messageBox.style.color = "#b33f00";
+        } else {
+            messageBox.style.background = "#efe2cc";
+            messageBox.style.color = "#62411e";
+        }
+        if (!isGameOverFlag) {
+            msgTimeout = setTimeout(() => {
+                if (isGameActive && !isGameOverFlag) {
+                    messageBox.innerHTML = "🎯 继续！看清新数字，快点击单数或双数！ 🎯";
+                    messageBox.style.background = "#efe2cc";
+                    messageBox.style.color = "#62411e";
+                }
+            }, 1300);
+        }
+    }
+
+    function flashCorrect() {
+        const screenDiv = document.querySelector('.number-screen');
+        screenDiv.style.transition = "0.07s";
+        screenDiv.style.transform = "scale(1.02)";
+        screenDiv.style.background = "#c7f0b2";
+        setTimeout(() => {
+            screenDiv.style.background = "#fef2dc";
+            screenDiv.style.transform = "scale(1)";
+        }, 180);
+    }
+    
+    function shakeWrong() {
+        const areaDiv = document.querySelector('.digital-area');
+        areaDiv.style.animation = "shake 0.3s ease-in-out 0s 1";
+        setTimeout(() => {
+            areaDiv.style.animation = "";
+        }, 300);
+    }
+
+    // 添加抖动动画
+    if (!document.querySelector('#shakeKeyframe')) {
+        const styleSheet = document.createElement("style");
+        styleSheet.id = "shakeKeyframe";
+        styleSheet.textContent = `
+            @keyframes shake {
+                0% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+                100% { transform: translateX(0); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    }
+
+    // 游戏结束逻辑
+    function gameOver() {
+        if (isGameOverFlag) return;
+        isGameOverFlag = true;
+        isGameActive = false;
+        
+        // 停止倒计时
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+        
+        // 显示游戏结束弹窗
+        const overlay = document.createElement('div');
+        overlay.className = 'game-over-overlay';
+        overlay.innerHTML = `
+            <div class="game-over-card">
+                <h2>💀 游戏结束 💀</h2>
+                <p>⏰ 时间归零！你输了...</p>
+                <p>🏆 最终得分：${score}</p>
+                <button class="play-again-btn" id="gameOverRestartBtn">🔁 再来一局</button>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        
+        const restartOverlayBtn = document.getElementById('gameOverRestartBtn');
+        restartOverlayBtn.addEventListener('click', () => {
+            overlay.remove();
+            fullReset();
+        });
+        
+        // 禁用按钮样式
+        gameContainer.classList.add('disabled-click');
+        setTempMessage("❌ 时间耗尽！你输了，点击【再来一局】挑战吧 ❌", true);
+    }
+    
+    // 处理倒计时（每0.1秒减少）
+    function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            if (!isGameActive || isGameOverFlag) return;
+            
+            if (timeLeft <= 0.05) {
+                // 时间归零，游戏结束
+                timeLeft = 0;
+                updateUI();
+                gameOver();
+            } else {
+                timeLeft -= 0.1;
+                if (timeLeft < 0) timeLeft = 0;
+                updateUI();
+            }
+        }, 100);
+    }
+    
+    // 处理回答
+    function handleAnswer(userChoiceIsOdd) {
+        if (!isGameActive || isGameOverFlag) {
+            setTempMessage("⛔ 游戏已经结束，请点击「重新开始」继续挑战", true);
+            return;
+        }
+        
+        const currentIsOdd = isOdd(currentNumber);
+        const isCorrect = (userChoiceIsOdd === currentIsOdd);
+        
+        if (isCorrect) {
+            // 答对：+10分，+2秒
+            score += 10;
+            timeLeft += 2.0;
+            setTempMessage(`✅ 漂亮！ ${currentNumber} 是 ${currentIsOdd ? '单数' : '双数'}！ +10分，时间+2秒 ✅`, false);
+            flashCorrect();
+        } else {
+            // 答错：-2分，-1秒
+            score -= 2;
+            timeLeft -= 1.0;
+            if (timeLeft < 0) timeLeft = 0;
+            setTempMessage(`❌ 可惜！ ${currentNumber} 是 ${currentIsOdd ? '单数' : '双数'} ！ -2分，时间-1秒 ❌`, true);
+            shakeWrong();
+        }
+        
+        // 分数下限保护（不低于-20，但不会结束游戏）
+        if (score < -20) score = -20;
+        
+        updateUI();
+        
+        // 检查时间是否归零（如果刚好扣到0则直接结束）
+        if (timeLeft <= 0.0 && isGameActive && !isGameOverFlag) {
+            timeLeft = 0;
+            updateUI();
+            gameOver();
+            return;
+        }
+        
+        // 生成下一个数字
+        generateNewNumber();
+    }
+    
+    function generateNewNumber() {
+        if (!isGameActive || isGameOverFlag) return;
+        currentNumber = getRandomNumber();
+        updateUI();
+    }
+    
+    // 完全重置游戏（重新开始）
+    function fullReset() {
+        // 清除弹窗残留（如果有）
+        const existingOverlay = document.querySelector('.game-over-overlay');
+        if (existingOverlay) existingOverlay.remove();
+        
+        // 重置标志
+        isGameOverFlag = false;
+        isGameActive = true;
+        
+        // 停止旧计时
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+        
+        // 重置变量
+        score = 0;
+        timeLeft = 10.0;
+        currentNumber = getRandomNumber();
+        
+        updateUI();
+        
+        // 重新开启倒计时
+        startTimer();
+        
+        // 恢复点击样式
+        gameContainer.classList.remove('disabled-click');
+        
+        // 重置消息
+        if (msgTimeout) clearTimeout(msgTimeout);
+        messageBox.innerHTML = "✨ 全新一局！初始10秒，答对+2秒，答错-1秒，别让时间归零！ ✨";
+        messageBox.style.background = "#efe2cc";
+        messageBox.style.color = "#62411e";
+        
+        // 小闪烁提醒
+        flashCorrect();
+    }
+    
+    // 绑定事件
+    function bindEvents() {
+        // 移除旧监听避免重复（简单处理：重新绑定前先解绑? 但初始化只调用一次没问题）
+        const newSingle = singleBtn.cloneNode(true);
+        const newDouble = doubleBtn.cloneNode(true);
+        const newRestart = restartBtn.cloneNode(true);
+        singleBtn.parentNode.replaceChild(newSingle, singleBtn);
+        doubleBtn.parentNode.replaceChild(newDouble, doubleBtn);
+        restartBtn.parentNode.replaceChild(newRestart, restartBtn);
+        
+        // 重新获取新元素
+        const finalSingle = document.getElementById('singleBtn');
+        const finalDouble = document.getElementById('doubleBtn');
+        const finalRestart = document.getElementById('restartBtn');
+        
+        finalSingle.addEventListener('click', () => handleAnswer(true));
+        finalDouble.addEventListener('click', () => handleAnswer(false));
+        finalRestart.addEventListener('click', () => fullReset());
+    }
+    
+    // 初始化
+    function init() {
+        bindEvents();
+        fullReset(); // 包含开始计时和生成数字
+    }
+    
+    // 页面关闭时清理计时器
+    window.addEventListener('beforeunload', () => {
+        if (timerInterval) clearInterval(timerInterval);
+    });
+    
+    init();
+</script>
+</body>
+</html>

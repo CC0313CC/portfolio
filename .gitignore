@@ -1,0 +1,9 @@
+# 忽略图片根目录下未压缩的课件原图（网页仅引用 images/compressed/ 下的 WebP）
+images/*.jpg
+images/*.png
+# 但保留证书原图（点击"查看原图"功能需要）
+!images/证书-*.jpg
+!images/证书-*.png
+
+# 压缩工具生成的报告（非站点资源）
+images/compressed/compression-report*.md
